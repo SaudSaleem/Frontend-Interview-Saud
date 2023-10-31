@@ -112,8 +112,28 @@ hr {
     border: none;
     border-radius: 2px;
 }
-.sim span, .condition span, .colour span, .network span, .storage span{
+
+.sim span,
+.condition span,
+.colour span,
+.network span,
+.storage span {
     font-size: 12px;
 }
-</style>
+
+@media only screen and (max-width: 768px) {
+
+    .add-to-basket {
+        width: 80%;
+        align-self: center;
+    }
+
+    .items {
+        align-self: center;
+    }
+
+    .main-container {
+        margin-top: 12px;
+    }
+}</style>
   

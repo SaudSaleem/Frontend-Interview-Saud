@@ -1,9 +1,9 @@
 <template>
     <div style="position: relative;">
         <div class="image-slider">
-            <div class="slider-container">
+            <div class="slider-container" @touchstart="touchStart">
                 <img @click="prevImage" src="../assets/arrow-left.png" class="pointer" style="height: 20px;">
-                <div class="image-container" @mouseover="showHoverImage = true" @mouseout="showHoverImage = false">
+                <div class="image-container" @click.stop="openPopup" @mouseover="showHoverImage = true" @mouseout="showHoverImage = false" title="Click to open Popup">
                     <img :src="$store.getters.getStandardImages[$store.getters.getcurrentIndex].src" alt="Slider Image" class="zoom-in" />
                 </div>
                 <img @click="nextImage" src="../assets/arrow-right.png" class="pointer" style="height: 20px;">
@@ -14,18 +14,22 @@
                 :class="{ 'dot': true, 'active-dot': $store.getters.getcurrentIndex === index }">
             </span>
         </div>
-        <ImageZoom :showHoverImage="showHoverImage"  />
+        <ImageZoom :showHoverImage="showHoverImage"  v-if="!isMobile()"/>
+        <Popup v-model="isPopupOpen" />
     </div>
 </template>
   
 <script>
+import Popup from './popup.vue';
 import ImageZoom from './ImageZoom.vue';
+
 export default {
     name: 'product-slider',
-    components: { ImageZoom },
+    components: { ImageZoom, Popup },
     data() {
         return {
             showHoverImage: false,
+            isPopupOpen: false
         };
     },
     methods: {
@@ -35,6 +39,30 @@ export default {
         nextImage() {
             this.$store.commit('setCurrentIndex',(this.$store.getters.getcurrentIndex + 1) % this.$store.getters.getStandardImages.length);
         },
+        openPopup(){
+            this.isPopupOpen = true;
+        },
+        touchStart (touchEvent) {
+        if (touchEvent.changedTouches.length !== 1) {
+          return;
+        }
+        const posXStart = touchEvent.changedTouches[0].clientX;
+        addEventListener('touchend', (touchEvent) => this.touchEnd(touchEvent, posXStart), {once: true});
+      },
+      touchEnd (touchEvent, posXStart) {
+        if (touchEvent.changedTouches.length !== 1) {
+          return;
+        }
+        const posXEnd = touchEvent.changedTouches[0].clientX;
+        if (posXStart < posXEnd) {
+          this.prevImage(); // swipe right
+        } else if (posXStart > posXEnd) {
+          this.nextImage(); // swipe left
+        }
+      },
+      isMobile(){
+        return window.innerWidth <= 768
+      }
     },
 
 
@@ -59,6 +87,10 @@ export default {
 
 }
 
+.image-container {
+    min-width: 249px;
+    min-height: 300px;
+}
 .image-container img {
     max-width: 100%;
     max-height: 300px;

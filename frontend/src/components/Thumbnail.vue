@@ -1,11 +1,10 @@
 <template>
-    <div class="thumbnail-container">
-        <div class="img-box pointer" @click="setSelectedImg(index)"
+    <div>
+        <div class="img-box pointer" @click.stop="setSelectedImg(index)"
             :class="{ 'img-box': true, 'selected-img': $store.getters.getcurrentIndex === index }"
             v-for="(img, index) in $store.getters.getThumbnailImages" :key="index">
             <img :src="img.src" alt="" />
         </div>
-
     </div>
 </template>
   
@@ -22,19 +21,9 @@ export default {
   
   
 <style scoped>
-.thumbnail-container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-    height: 100vh;
-    min-width: 120px;
-    align-items: center;
-    padding-top: 8px;
-}
 
 .img-box {
-    width: 80%;
-    height: 100px;
+    padding: 3px;
     border: solid 3px gray;
     border-radius: 12px;
     display: flex;
@@ -44,8 +33,9 @@ export default {
 }
 
 img {
-    width: 96%;
-    height: 96%;
+    width: 70px;
+    height: 100%;
+
 }
 
 .selected-img {
