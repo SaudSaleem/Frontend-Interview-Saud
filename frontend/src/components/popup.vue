@@ -20,7 +20,11 @@
             <Thumbnail class="thumbnail-container" />
           </div>
         </div>
-        <div v-else style="margin-top: 30px;"> There is no video available for this product</div>
+        <div v-else style="margin-top: 30px;">
+        <iframe width="80%" height="315"
+            src="https://youtube.com/embed/WVXSnChJOb0?autoplay=1&controls=0&showinfo=0&autohide=1" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+          </div>
 
       </div>
     </div>
